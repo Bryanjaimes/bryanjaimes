@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useEffect, useState } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -10,7 +10,10 @@ function createEarthTexture() {
   canvas.height = 1024;
   const ctx = canvas.getContext('2d');
   
-  if (!ctx) return null;
+  if (!ctx) {
+    // Fallback: return empty canvas if context creation fails
+    return canvas;
+  }
   
   // Ocean background - very dark, almost black
   ctx.fillStyle = '#050a14';
@@ -67,19 +70,24 @@ function createEarthTexture() {
   return canvas;
 }
 
+const GLOBE_RADIUS = 2;
+const WIREFRAME_OFFSET = 0.02;
+
 function Globe() {
   const meshRef = useRef<THREE.Mesh>(null);
   const wireframeRef = useRef<THREE.Mesh>(null);
-  const [texture, setTexture] = useState<THREE.Texture | null>(null);
+
+  const texture = useMemo(() => {
+    const canvas = createEarthTexture();
+    return new THREE.CanvasTexture(canvas);
+  }, []);
 
   useEffect(() => {
-    const canvas = createEarthTexture();
-    if (canvas) {
-      const tex = new THREE.CanvasTexture(canvas);
-      tex.needsUpdate = true;
-      setTexture(tex);
-    }
-  }, []);
+    // Cleanup texture on unmount
+    return () => {
+      texture.dispose();
+    };
+  }, [texture]);
 
   useFrame(({ clock }) => {
     if (meshRef.current) {
@@ -94,14 +102,14 @@ function Globe() {
     <>
       {/* Textured globe with continents */}
       <mesh ref={meshRef}>
-        <sphereGeometry args={[2, 64, 64]} />
+        <sphereGeometry args={[GLOBE_RADIUS, 64, 64]} />
         <meshBasicMaterial
           map={texture}
         />
       </mesh>
       {/* Wireframe overlay for the tech aesthetic */}
       <mesh ref={wireframeRef}>
-        <sphereGeometry args={[2.02, 64, 64]} />
+        <sphereGeometry args={[GLOBE_RADIUS + WIREFRAME_OFFSET, 64, 64]} />
         <meshBasicMaterial
           color="#3b82f6"
           wireframe
