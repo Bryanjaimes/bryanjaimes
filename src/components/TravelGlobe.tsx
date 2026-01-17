@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type GlobeInstance = any;
 
 // Countries you've visited
 const visitedCountries = [
@@ -62,9 +64,9 @@ const markerData = countries.map(c => ({
 }));
 
 export default function TravelGlobe() {
-  const globeRef = useRef<any>(null);
+  const globeRef = useRef<GlobeInstance>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [Globe, setGlobe] = useState<any>(null);
+  const [Globe, setGlobe] = useState<GlobeInstance>(null);
   const [selectedCountry, setSelectedCountry] = useState<typeof markerData[0] | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 700 });
 
@@ -119,7 +121,7 @@ export default function TravelGlobe() {
           pointColor="color"
           pointAltitude={0.01}
           pointRadius={0.5}
-          pointLabel={(d: any) => `
+          pointLabel={(d: typeof markerData[0]) => `
             <div style="background: rgba(0,0,0,0.85); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
               <b style="color: white;">${d.name}</b>
               <span style="color: ${d.visited ? '#10b981' : '#3b82f6'}; margin-left: 8px;">
@@ -127,7 +129,7 @@ export default function TravelGlobe() {
               </span>
             </div>
           `}
-          onPointClick={(point: any) => setSelectedCountry(point)}
+          onPointClick={(point: typeof markerData[0]) => setSelectedCountry(point)}
           atmosphereColor="#4da6ff"
           atmosphereAltitude={0.15}
           enablePointerInteraction={true}
