@@ -4,10 +4,16 @@ import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+const TEXTURE_WIDTH = 2048;
+const TEXTURE_HEIGHT = 1024;
+const GLOBE_RADIUS = 2;
+const WIREFRAME_OFFSET = 0.02;
+const WIREFRAME_OPACITY = 0.08;
+
 function createEarthTexture() {
   const canvas = document.createElement('canvas');
-  canvas.width = 2048;
-  canvas.height = 1024;
+  canvas.width = TEXTURE_WIDTH;
+  canvas.height = TEXTURE_HEIGHT;
   const ctx = canvas.getContext('2d');
   
   if (!ctx) {
@@ -70,9 +76,6 @@ function createEarthTexture() {
   return canvas;
 }
 
-const GLOBE_RADIUS = 2;
-const WIREFRAME_OFFSET = 0.02;
-
 function Globe() {
   const meshRef = useRef<THREE.Mesh>(null);
   const wireframeRef = useRef<THREE.Mesh>(null);
@@ -114,7 +117,7 @@ function Globe() {
           color="#3b82f6"
           wireframe
           transparent
-          opacity={0.08}
+          opacity={WIREFRAME_OPACITY}
         />
       </mesh>
     </>
