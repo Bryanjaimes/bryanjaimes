@@ -56,22 +56,6 @@ const projects: Project[] = [
     link: "https://github.com/Bryanjaimes/opendeploy",
   },
   {
-    id: "neural-pathology",
-    icon: "🧬",
-    title: "Neural Pathology",
-    description:
-      "Transformer-based cancer cell classification from histopathology slides. Helping pathologists focus on what matters.",
-    longDescription:
-      "Leveraging vision transformers to analyze whole-slide images, identifying cancerous regions with high precision and providing attention maps for interpretability.",
-    tags: ["Vision Transformer", "TensorFlow", "FastAPI", "Whole-Slide Imaging"],
-    highlight: {
-      icon: "🎯",
-      text: "94% classification accuracy",
-    },
-    gradient: "from-purple-500 to-pink-400",
-    glowColor: "rgba(139, 92, 246, 0.2)",
-  },
-  {
     id: "permit-classifier",
     icon: "📋",
     title: "Permit Classifier",
@@ -86,6 +70,7 @@ const projects: Project[] = [
     },
     gradient: "from-amber-500 to-orange-400",
     glowColor: "rgba(245, 158, 11, 0.2)",
+    link: "https://github.com/amjustin13/MachineLearning-InCommercialRealEstate",
   },
 ];
 
