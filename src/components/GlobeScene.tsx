@@ -101,7 +101,6 @@ function Continents() {
         color: '#3b82f6',
         transparent: true,
         opacity: 0.4,
-        linewidth: 2,
       });
       const line = new THREE.Line(geometry, material);
       lines.push(line);
