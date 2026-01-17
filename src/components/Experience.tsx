@@ -38,7 +38,7 @@ const experiences: Experience[] = [
     title: "Machine Learning Engineer",
     company: "BLDUP",
     description:
-      "Built and deployed ML microservice automating permit classification with ~89% accuracy. Trained BERT model on 3M+ permits from Boston, Austin, and San Francisco. Designed production-ready FastAPI service with Redis caching.",
+      "Built and deployed ML microservice automating permit classification with ~90% accuracy. Trained BERT model on 3M+ permits from Boston, Austin, and San Francisco. Designed production-ready FastAPI service with Redis caching.",
     technologies: ["Python", "PyTorch", "BERT", "FastAPI", "Redis", "PostgreSQL"],
     type: "work",
   },

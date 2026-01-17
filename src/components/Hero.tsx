@@ -17,7 +17,7 @@ const GlobeScene = dynamic(() => import("./GlobeScene"), {
 const stats = [
   { value: "4+", label: "Years Experience" },
   { value: "3M+", label: "Data Points Processed" },
-  { value: "89%", label: "ML Accuracy" },
+  { value: "90%", label: "ML Accuracy" },
 ];
 
 const containerVariants = {

@@ -82,7 +82,7 @@ const projects: Project[] = [
     tags: ["BERT", "NLP", "FastAPI", "PostgreSQL", "Redis"],
     highlight: {
       icon: "📊",
-      text: "89% accuracy on 3M+ permits",
+      text: "90% accuracy on 3M+ permits",
     },
     gradient: "from-amber-500 to-orange-400",
     glowColor: "rgba(245, 158, 11, 0.2)",
