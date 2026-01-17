@@ -1,28 +1,115 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+function createEarthTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 2048;
+  canvas.height = 1024;
+  const ctx = canvas.getContext('2d');
+  
+  if (!ctx) return null;
+  
+  // Ocean background - very dark, almost black
+  ctx.fillStyle = '#050a14';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw simplified continents with bright, vivid green
+  ctx.fillStyle = '#22ff88';
+  
+  // North America
+  ctx.beginPath();
+  ctx.ellipse(300, 280, 220, 280, 0.3, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Greenland
+  ctx.beginPath();
+  ctx.ellipse(550, 150, 80, 90, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // South America
+  ctx.beginPath();
+  ctx.ellipse(420, 650, 140, 230, 0.2, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Europe
+  ctx.beginPath();
+  ctx.ellipse(1020, 230, 180, 120, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Africa
+  ctx.beginPath();
+  ctx.ellipse(1120, 520, 200, 280, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Asia
+  ctx.beginPath();
+  ctx.ellipse(1520, 280, 340, 240, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // India subcontinent
+  ctx.beginPath();
+  ctx.ellipse(1420, 450, 90, 120, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Australia
+  ctx.beginPath();
+  ctx.ellipse(1680, 720, 150, 120, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Antarctica (bottom edge)
+  ctx.beginPath();
+  ctx.ellipse(1024, 950, 800, 100, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  return canvas;
+}
+
 function Globe() {
   const meshRef = useRef<THREE.Mesh>(null);
+  const wireframeRef = useRef<THREE.Mesh>(null);
+  const [texture, setTexture] = useState<THREE.Texture | null>(null);
+
+  useEffect(() => {
+    const canvas = createEarthTexture();
+    if (canvas) {
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.needsUpdate = true;
+      setTexture(tex);
+    }
+  }, []);
 
   useFrame(({ clock }) => {
     if (meshRef.current) {
       meshRef.current.rotation.y = clock.getElapsedTime() * 0.05;
     }
+    if (wireframeRef.current) {
+      wireframeRef.current.rotation.y = clock.getElapsedTime() * 0.05;
+    }
   });
 
   return (
-    <mesh ref={meshRef}>
-      <sphereGeometry args={[2, 64, 64]} />
-      <meshBasicMaterial
-        color="#3b82f6"
-        wireframe
-        transparent
-        opacity={0.15}
-      />
-    </mesh>
+    <>
+      {/* Textured globe with continents */}
+      <mesh ref={meshRef}>
+        <sphereGeometry args={[2, 64, 64]} />
+        <meshBasicMaterial
+          map={texture}
+        />
+      </mesh>
+      {/* Wireframe overlay for the tech aesthetic */}
+      <mesh ref={wireframeRef}>
+        <sphereGeometry args={[2.02, 64, 64]} />
+        <meshBasicMaterial
+          color="#3b82f6"
+          wireframe
+          transparent
+          opacity={0.08}
+        />
+      </mesh>
+    </>
   );
 }
 
