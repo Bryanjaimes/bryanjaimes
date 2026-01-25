@@ -17,19 +17,17 @@ const TravelGlobe = dynamic(() => import("@/components/TravelGlobe"), {
 const travelData = {
   visited: [
     { name: "United States", flag: "🇺🇸", year: "Home" },
-    { name: "Mexico", flag: "🇲🇽", year: "2023" },
     { name: "Canada", flag: "🇨🇦", year: "2022" },
-    // Add more visited countries
+    { name: "South Korea", flag: "🇰🇷", year: "2024" },
+    { name: "Japan", flag: "🇯🇵", year: "2024" },
+    { name: "Puerto Rico", flag: "🇵🇷", year: "2024" },
+    { name: "Germany", flag: "🇩🇪", year: "2023" },
+    { name: "France", flag: "🇫🇷", year: "2023" },
+    { name: "Luxembourg", flag: "🇱🇺", year: "2023" },
+    { name: "El Salvador", flag: "🇸🇻", year: "2023" },
+    { name: "Guatemala", flag: "🇬🇹", year: "2023" },
   ],
-  bucketList: [
-    { name: "Japan", flag: "🇯🇵", reason: "Tech & Culture" },
-    { name: "Switzerland", flag: "🇨🇭", reason: "Alps & AI Research" },
-    { name: "Iceland", flag: "🇮🇸", reason: "Northern Lights" },
-    { name: "New Zealand", flag: "🇳🇿", reason: "Nature & Adventure" },
-    { name: "Singapore", flag: "🇸🇬", reason: "Innovation Hub" },
-    { name: "Norway", flag: "🇳🇴", reason: "Fjords & Tech Scene" },
-    // Add more bucket list countries
-  ],
+  bucketList: [],
 };
 
 export default function TravelPage() {
@@ -52,24 +50,8 @@ export default function TravelPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-8 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold text-white mb-4"
-          >
-            Exploring the{" "}
-            <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              World
-            </span>
-          </motion.h1>
-        </div>
-      </section>
-
       {/* Globe Section */}
-      <section className="px-6 pb-16">
+      <section className="pt-32 px-6 pb-16">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}

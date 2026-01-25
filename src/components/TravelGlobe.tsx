@@ -1,80 +1,57 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type GlobeInstance = any;
 
 // Countries you've visited
 const visitedCountries = [
-  "United States",
-  "Mexico",
+  "United States of America",
   "Canada",
+  "South Korea",
+  "Japan",
+  "Puerto Rico",
+  "Germany",
+  "France",
+  "Luxembourg",
+  "El Salvador",
+  "Guatemala",
 ];
 
-// Country data with coordinates
-const countries = [
-  { name: "United States", lat: 39.8, lng: -98.5, region: "North America" },
-  { name: "Canada", lat: 56.1, lng: -106.3, region: "North America" },
-  { name: "Mexico", lat: 23.6, lng: -102.5, region: "North America" },
-  { name: "Costa Rica", lat: 9.7, lng: -83.8, region: "Central America" },
-  { name: "Cuba", lat: 21.5, lng: -77.8, region: "Caribbean" },
-  { name: "Brazil", lat: -14.2, lng: -51.9, region: "South America" },
-  { name: "Argentina", lat: -38.4, lng: -63.6, region: "South America" },
-  { name: "Colombia", lat: 4.6, lng: -74.3, region: "South America" },
-  { name: "Peru", lat: -9.2, lng: -75.0, region: "South America" },
-  { name: "Chile", lat: -35.7, lng: -71.5, region: "South America" },
-  { name: "United Kingdom", lat: 55.4, lng: -3.4, region: "Europe" },
-  { name: "France", lat: 46.2, lng: 2.2, region: "Europe" },
-  { name: "Germany", lat: 51.2, lng: 10.4, region: "Europe" },
-  { name: "Spain", lat: 40.5, lng: -3.7, region: "Europe" },
-  { name: "Italy", lat: 41.9, lng: 12.6, region: "Europe" },
-  { name: "Portugal", lat: 39.4, lng: -8.2, region: "Europe" },
-  { name: "Netherlands", lat: 52.1, lng: 5.3, region: "Europe" },
-  { name: "Switzerland", lat: 46.8, lng: 8.2, region: "Europe" },
-  { name: "Norway", lat: 60.5, lng: 8.5, region: "Europe" },
-  { name: "Sweden", lat: 60.1, lng: 18.6, region: "Europe" },
-  { name: "Iceland", lat: 65.0, lng: -19.0, region: "Europe" },
-  { name: "Greece", lat: 39.1, lng: 21.8, region: "Europe" },
-  { name: "Turkey", lat: 39.0, lng: 35.2, region: "Middle East" },
-  { name: "UAE", lat: 23.4, lng: 53.8, region: "Middle East" },
-  { name: "Israel", lat: 31.0, lng: 34.9, region: "Middle East" },
-  { name: "Japan", lat: 36.2, lng: 138.3, region: "Asia" },
-  { name: "South Korea", lat: 35.9, lng: 127.8, region: "Asia" },
-  { name: "China", lat: 35.9, lng: 104.2, region: "Asia" },
-  { name: "Thailand", lat: 15.9, lng: 100.9, region: "Asia" },
-  { name: "Vietnam", lat: 14.1, lng: 108.3, region: "Asia" },
-  { name: "Singapore", lat: 1.4, lng: 103.8, region: "Asia" },
-  { name: "India", lat: 20.6, lng: 79.0, region: "Asia" },
-  { name: "Australia", lat: -25.3, lng: 133.8, region: "Oceania" },
-  { name: "New Zealand", lat: -40.9, lng: 174.9, region: "Oceania" },
-  { name: "South Africa", lat: -30.6, lng: 22.9, region: "Africa" },
-  { name: "Egypt", lat: 26.8, lng: 30.8, region: "Africa" },
-  { name: "Morocco", lat: 31.8, lng: -7.1, region: "Africa" },
-  { name: "Kenya", lat: -0.02, lng: 37.9, region: "Africa" },
-  { name: "Russia", lat: 61.5, lng: 105.3, region: "Asia" },
+const cities = [
+  { name: "Boston", lat: 42.3601, lng: -71.0589 },
+  { name: "New York City", lat: 40.7128, lng: -74.0060 },
+  { name: "Mexico City", lat: 19.4326, lng: -99.1332 },
+  { name: "Seoul", lat: 37.5665, lng: 126.9780 },
+  { name: "Tokyo", lat: 35.6762, lng: 139.6503 },
+  { name: "San Juan", lat: 18.4655, lng: -66.1057 },
+  { name: "Berlin", lat: 52.5200, lng: 13.4050 },
+  { name: "Paris", lat: 48.8566, lng: 2.3522 },
+  { name: "Luxembourg City", lat: 49.6116, lng: 6.1319 },
+  { name: "San Salvador", lat: 13.6929, lng: -89.2182 },
+  { name: "Guatemala City", lat: 14.6349, lng: -90.5069 },
 ];
-
-// Prepare marker data
-const markerData = countries.map(c => ({
-  ...c,
-  visited: visitedCountries.includes(c.name),
-  color: visitedCountries.includes(c.name) ? "#10b981" : "#3b82f6",
-  size: 0.5,
-}));
 
 export default function TravelGlobe() {
   const globeRef = useRef<GlobeInstance>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [Globe, setGlobe] = useState<GlobeInstance>(null);
-  const [selectedCountry, setSelectedCountry] = useState<typeof markerData[0] | null>(null);
+  const [hoveredPolygon, setHoveredPolygon] = useState<any | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 700 });
+  const [countriesGeoJson, setCountriesGeoJson] = useState({ features: [] });
 
   // Dynamically import react-globe.gl (client-side only)
   useEffect(() => {
     import("react-globe.gl").then((mod) => {
       setGlobe(() => mod.default);
     });
+
+    // Fetch countries GeoJSON
+    fetch('https://raw.githubusercontent.com/vasturiano/react-globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
+      .then(res => res.json())
+      .then(setCountriesGeoJson);
   }, []);
 
   // Handle resize
@@ -93,12 +70,41 @@ export default function TravelGlobe() {
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  // Auto-rotate
+  // Auto-rotate and Clouds
   useEffect(() => {
     if (globeRef.current) {
-      globeRef.current.controls().autoRotate = true;
-      globeRef.current.controls().autoRotateSpeed = 0.5;
+      // Config initial view
       globeRef.current.pointOfView({ lat: 20, lng: -30, altitude: 2.5 });
+      globeRef.current.controls().autoRotate = false;
+      globeRef.current.controls().autoRotateSpeed = 0.5;
+
+      // Add Clouds Sphere
+      const globeRadius = globeRef.current.getGlobeRadius();
+      const cloudsRadius = globeRadius * 1.02; // Slightly larger than globe
+
+      new THREE.TextureLoader().load(
+        "//unpkg.com/three-globe/example/img/earth-clouds.png",
+        (cloudsTexture) => {
+          const clouds = new THREE.Mesh(
+            new THREE.SphereGeometry(cloudsRadius, 75, 75),
+            new THREE.MeshPhongMaterial({
+              map: cloudsTexture,
+              transparent: true,
+              opacity: 0.8,
+              blending: THREE.AdditiveBlending,
+              side: THREE.DoubleSide
+            })
+          );
+          
+          globeRef.current.scene().add(clouds);
+
+          // Animate clouds (Removed to stop spinning)
+          // (function animate() {
+          //   clouds.rotation.y += 0.0002; 
+          //   requestAnimationFrame(animate);
+          // })();
+        }
+      );
     }
   }, [Globe]);
 
@@ -114,22 +120,39 @@ export default function TravelGlobe() {
           height={dimensions.height}
           globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
           bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+          // specularImageUrl="//unpkg.com/three-globe/example/img/earth-water.png" 
           backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
-          pointsData={markerData}
+          
+          pointsData={cities}
           pointLat="lat"
           pointLng="lng"
-          pointColor="color"
-          pointAltitude={0.01}
-          pointRadius={0.5}
-          pointLabel={(d: typeof markerData[0]) => `
+          pointColor={() => "#ffffff"}
+          pointAltitude={0.02}
+          pointRadius={0.4}
+          pointLabel="name"
+          
+          polygonsData={countriesGeoJson.features}
+          polygonAltitude={0.01}
+          polygonCapColor={(d: any) => {
+             const isVisited = visitedCountries.includes(d.properties.NAME);
+             const isHovered = d === hoveredPolygon;
+             
+             if (isHovered) return "rgba(255, 255, 255, 0.3)";
+             if (isVisited) return "rgba(16, 185, 129, 0.6)"; // Emerald for visited
+             return "rgba(255, 255, 255, 0)"; // Transparent for others
+          }}
+          polygonSideColor={() => "rgba(0, 0, 0, 0)"}
+          polygonStrokeColor={() => "rgba(255, 255, 255, 0.1)"}
+          polygonLabel={({ properties: d }: any) => `
             <div style="background: rgba(0,0,0,0.85); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
-              <b style="color: white;">${d.name}</b>
-              <span style="color: ${d.visited ? '#10b981' : '#3b82f6'}; margin-left: 8px;">
-                ${d.visited ? '✓ Visited' : '○ Bucket List'}
-              </span>
+              <b style="color: white; font-family: sans-serif;">${d.NAME}</b>
+              ${visitedCountries.includes(d.NAME) ? 
+                '<br><span style="color: #10b981; font-family: sans-serif; font-size: 0.8em;">✓ Visited</span>' : 
+                ''}
             </div>
           `}
-          onPointClick={(point: typeof markerData[0]) => setSelectedCountry(point)}
+          onPolygonHover={setHoveredPolygon}
+          
           atmosphereColor="#4da6ff"
           atmosphereAltitude={0.15}
           enablePointerInteraction={true}
@@ -165,33 +188,12 @@ export default function TravelGlobe() {
         </div>
       </div>
 
-      {selectedCountry && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 glass-card rounded-2xl px-6 py-4">
-          <div className="flex flex-col items-center gap-2">
-            <div className="flex items-center gap-3">
-              <div className={`w-3 h-3 rounded-full ${selectedCountry.visited ? "bg-emerald-500" : "bg-blue-500"}`} />
-              <span className="text-white text-lg font-semibold">{selectedCountry.name}</span>
-            </div>
-            <div className="flex items-center gap-4 text-sm">
-              <span className="text-zinc-400">{selectedCountry.region}</span>
-              <span className={selectedCountry.visited ? "text-emerald-400" : "text-blue-400"}>
-                {selectedCountry.visited ? "✓ Visited" : "○ Bucket List"}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Legend */}
       <div className="absolute top-6 right-6 glass-card rounded-2xl p-4">
         <div className="space-y-2.5 text-sm">
           <div className="flex items-center gap-2.5">
             <div className="w-3 h-3 rounded-full bg-emerald-500" />
             <span className="text-zinc-300">Visited</span>
-          </div>
-          <div className="flex items-center gap-2.5">
-            <div className="w-3 h-3 rounded-full bg-blue-500" />
-            <span className="text-zinc-300">Bucket List</span>
           </div>
         </div>
       </div>

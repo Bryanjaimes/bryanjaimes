@@ -50,8 +50,7 @@ const experiences: Experience[] = [
     title: "B.S. Computer Engineering",
     company: "Boston University",
     description:
-      "Foundation in systems engineering, algorithms, and machine learning fundamentals. Focused coursework in deep learning, computer vision, and distributed systems. Senior capstone: Diabetic retinopathy detection system (A-eye).",
-    type: "education",
+      "Specialized in cloud computing, cybersecurity, and embedded systems. Shipped a cross-platform React Native app, engineered an IoT vehicle with real-time communication, and designed an FPGA game from scratch in Verilog.",    technologies: ["React Native", "C++", "Verilog", "FPGA", "IoT", "AWS"],    type: "education",
   },
 ];
 
