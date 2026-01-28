@@ -74,10 +74,6 @@ export default function Contact() {
           <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight mb-6">
             Let&apos;s Connect
           </h2>
-          <p className="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Interested in working together on healthcare AI, MLOps, or something that 
-            could change the world? Let&apos;s chat.
-          </p>
         </motion.div>
 
         {/* Contact Cards */}

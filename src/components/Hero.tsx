@@ -14,10 +14,6 @@ const GlobeScene = dynamic(() => import("./GlobeScene"), {
   ),
 });
 
-const stats = [
-  { value: "4+", label: "Years Experience" },
-];
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -51,75 +47,9 @@ export default function Hero() {
       </div>
 
       {/* 3D Globe */}
-      <GlobeScene />
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-20">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="text-center"
-        >
-          {/* Label */}
-          <motion.div
-            variants={itemVariants}
-            className="inline-flex items-center gap-3 mb-8"
-          >
-            <span className="w-10 h-px bg-gradient-to-r from-transparent to-blue-500" />
-            <span className="font-mono text-xs tracking-[0.3em] uppercase text-blue-400">
-              AI/ML Engineer
-            </span>
-            <span className="w-10 h-px bg-gradient-to-l from-transparent to-blue-500" />
-          </motion.div>
-
-          {/* Title */}
-          <motion.h1
-            variants={itemVariants}
-            className="font-serif text-6xl md:text-7xl lg:text-8xl font-normal tracking-tight mb-8"
-          >
-            Bryan{" "}
-            <em className="italic gradient-text">Jaimes</em>
-          </motion.h1>
-
-          {/* CTAs */}
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
-          >
-            <Link href="#projects" className="btn-primary">
-              View Projects
-            </Link>
-            <Link href="#contact" className="btn-secondary">
-              Get in Touch
-            </Link>
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-wrap justify-center gap-8 md:gap-16 pt-12 border-t border-white/10"
-          >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1 + index * 0.1, duration: 0.5 }}
-                className="text-center"
-              >
-                <div className="font-serif text-4xl md:text-5xl italic gradient-text mb-2">
-                  {stat.value}
-                </div>
-                <div className="font-mono text-xs tracking-[0.1em] uppercase text-zinc-500">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </div>
-
+      {/* Content: Start with Projects grid */}
+      {/* You can import and render the Projects component directly here if you want projects at the top */}
+      {/* <Projects /> */}
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}

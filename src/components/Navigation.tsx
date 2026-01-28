@@ -11,6 +11,27 @@ const navItems = [
   { name: "Contact", href: "#contact" },
 ];
 
+const projectLinks = [
+  {
+    id: "a-eye",
+    title: "A-eye (SASHA)",
+    icon: "👁️",
+    href: "https://github.com/Bryanjaimes/a-eye",
+  },
+  {
+    id: "opendeploy",
+    title: "OpenDeploy",
+    icon: "🚀",
+    href: "https://github.com/Bryanjaimes/opendeploy",
+  },
+  {
+    id: "permit-classifier",
+    title: "Permit Classifier",
+    icon: "📋",
+    href: "https://github.com/amjustin13/MachineLearning-InCommercialRealEstate",
+  },
+];
+
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -53,6 +74,7 @@ export default function Navigation() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * index, duration: 0.5 }}
+                className={item.name === "Projects" ? "relative group" : undefined}
               >
                 <Link
                   href={item.href}
@@ -61,6 +83,38 @@ export default function Navigation() {
                   {item.name}
                   <span className="absolute -bottom-1 left-0 w-0 h-px bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300 group-hover:w-full" />
                 </Link>
+
+                {item.name === "Projects" && (
+                  <div className="absolute left-1/2 top-full mt-2 w-72 -translate-x-1/2 rounded-2xl border border-white/10 bg-[#0b0f1a]/95 backdrop-blur-xl shadow-2xl opacity-0 invisible pointer-events-none transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto z-50">
+                    <div className="p-2">
+                      {projectLinks.map((project) => (
+                        <a
+                          key={project.id}
+                          href={project.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors"
+                        >
+                          <span className="text-base">{project.icon}</span>
+                          <span className="flex-1">{project.title}</span>
+                          <svg
+                            className="w-4 h-4 text-zinc-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                            />
+                          </svg>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </motion.li>
             ))}
             <motion.li

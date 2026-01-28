@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-const TravelGlobe = dynamic(() => import("@/components/TravelGlobe"), {
+const TravelGoogleEarth = dynamic(() => import("@/components/TravelGoogleEarth"), {
   ssr: false,
   loading: () => (
     <div className="w-full h-[600px] md:h-[700px] flex items-center justify-center">
@@ -16,18 +16,17 @@ const TravelGlobe = dynamic(() => import("@/components/TravelGlobe"), {
 // Countries organized by region
 const travelData = {
   visited: [
-    { name: "United States", flag: "🇺🇸", year: "Home" },
-    { name: "Canada", flag: "🇨🇦", year: "2022" },
-    { name: "South Korea", flag: "🇰🇷", year: "2024" },
-    { name: "Japan", flag: "🇯🇵", year: "2024" },
-    { name: "Puerto Rico", flag: "🇵🇷", year: "2024" },
-    { name: "Germany", flag: "🇩🇪", year: "2023" },
-    { name: "France", flag: "🇫🇷", year: "2023" },
-    { name: "Luxembourg", flag: "🇱🇺", year: "2023" },
-    { name: "El Salvador", flag: "🇸🇻", year: "2023" },
-    { name: "Guatemala", flag: "🇬🇹", year: "2023" },
+    { name: "United States", flag: "🇺🇸" },
+    { name: "Canada", flag: "🇨🇦" },
+    { name: "South Korea", flag: "🇰🇷" },
+    { name: "Japan", flag: "🇯🇵" },
+    { name: "Puerto Rico", flag: "🇵🇷" },
+    { name: "Germany", flag: "🇩🇪" },
+    { name: "France", flag: "🇫🇷" },
+    { name: "Luxembourg", flag: "🇱🇺" },
+    { name: "El Salvador", flag: "🇸🇻" },
+    { name: "Guatemala", flag: "🇬🇹" },
   ],
-  bucketList: [],
 };
 
 export default function TravelPage() {
@@ -59,18 +58,18 @@ export default function TravelPage() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="glass-card rounded-3xl overflow-hidden"
           >
-            <TravelGlobe />
+            <TravelGoogleEarth />
           </motion.div>
         </div>
       </section>
 
       {/* Country Lists */}
       <section className="px-6 pb-24">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
+        <div className="max-w-3xl mx-auto">
           {/* Visited Countries */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             className="glass-card rounded-3xl p-8"
           >
@@ -78,7 +77,7 @@ export default function TravelPage() {
               <div className="w-4 h-4 rounded-full bg-emerald-500" />
               <h2 className="text-2xl font-bold text-white">Places I&apos;ve Been</h2>
             </div>
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {travelData.visited.map((country) => (
                 <div
                   key={country.name}
@@ -88,34 +87,6 @@ export default function TravelPage() {
                     <span className="text-2xl">{country.flag}</span>
                     <span className="text-white">{country.name}</span>
                   </div>
-                  <span className="text-emerald-400 text-sm">{country.year}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Bucket List */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-            className="glass-card rounded-3xl p-8"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-4 h-4 rounded-full bg-blue-500" />
-              <h2 className="text-2xl font-bold text-white">Bucket List</h2>
-            </div>
-            <div className="space-y-3">
-              {travelData.bucketList.map((country) => (
-                <div
-                  key={country.name}
-                  className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{country.flag}</span>
-                    <span className="text-white">{country.name}</span>
-                  </div>
-                  <span className="text-blue-400 text-sm">{country.reason}</span>
                 </div>
               ))}
             </div>
@@ -126,7 +97,6 @@ export default function TravelPage() {
       {/* Footer */}
       <footer className="border-t border-white/10 py-8 px-6">
         <div className="max-w-7xl mx-auto text-center text-zinc-500 text-sm">
-          <p>✈️ More adventures coming soon...</p>
         </div>
       </footer>
     </main>

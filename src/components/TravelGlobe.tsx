@@ -2,9 +2,23 @@
 
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import type { GlobeMethods } from "react-globe.gl";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type GlobeInstance = any;
+// Extract the type of the default export from react-globe.gl
+type GlobeComponent = typeof import("react-globe.gl")["default"];
+
+interface CountryProperties {
+  NAME: string;
+  ISO_A2?: string;
+  [key: string]: unknown;
+}
+
+interface GeoJsonFeature {
+  type: string;
+  properties: CountryProperties;
+  geometry: unknown;
+}
+
 
 // Countries you've visited
 const visitedCountries = [
@@ -35,12 +49,16 @@ const cities = [
 ];
 
 export default function TravelGlobe() {
-  const globeRef = useRef<GlobeInstance>(null);
+  const globeRef = useRef<GlobeMethods | undefined>(undefined);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [Globe, setGlobe] = useState<GlobeInstance>(null);
-  const [hoveredPolygon, setHoveredPolygon] = useState<any | null>(null);
+  const [Globe, setGlobe] = useState<GlobeComponent | null>(null);
+  const [hoveredPolygon, setHoveredPolygon] = useState<GeoJsonFeature | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 700 });
   const [countriesGeoJson, setCountriesGeoJson] = useState({ features: [] });
+
+  const handlePolygonHover = (polygon: object | null) => {
+    setHoveredPolygon(polygon as GeoJsonFeature | null);
+  };
 
   // Dynamically import react-globe.gl (client-side only)
   useEffect(() => {
@@ -96,7 +114,9 @@ export default function TravelGlobe() {
             })
           );
           
-          globeRef.current.scene().add(clouds);
+          if (globeRef.current) {
+            globeRef.current.scene().add(clouds);
+          }
 
           // Animate clouds (Removed to stop spinning)
           // (function animate() {
@@ -133,7 +153,8 @@ export default function TravelGlobe() {
           
           polygonsData={countriesGeoJson.features}
           polygonAltitude={0.01}
-          polygonCapColor={(d: any) => {
+          polygonCapColor={(obj: unknown) => {
+             const d = obj as GeoJsonFeature;
              const isVisited = visitedCountries.includes(d.properties.NAME);
              const isHovered = d === hoveredPolygon;
              
@@ -143,15 +164,17 @@ export default function TravelGlobe() {
           }}
           polygonSideColor={() => "rgba(0, 0, 0, 0)"}
           polygonStrokeColor={() => "rgba(255, 255, 255, 0.1)"}
-          polygonLabel={({ properties: d }: any) => `
+          polygonLabel={(obj: unknown) => {
+            const d = (obj as GeoJsonFeature).properties;
+            return `
             <div style="background: rgba(0,0,0,0.85); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
               <b style="color: white; font-family: sans-serif;">${d.NAME}</b>
               ${visitedCountries.includes(d.NAME) ? 
                 '<br><span style="color: #10b981; font-family: sans-serif; font-size: 0.8em;">✓ Visited</span>' : 
                 ''}
             </div>
-          `}
-          onPolygonHover={setHoveredPolygon}
+          `}}
+          onPolygonHover={handlePolygonHover}
           
           atmosphereColor="#4da6ff"
           atmosphereAltitude={0.15}

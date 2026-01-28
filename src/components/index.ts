@@ -6,3 +6,5 @@ export { default as Contact } from "./Contact";
 export { default as Footer } from "./Footer";
 export { default as GlobeScene } from "./GlobeScene";
 export { default as TravelGlobe } from "./TravelGlobe";
+export { default as TravelGoogleEarth } from "./TravelGoogleEarth";
+

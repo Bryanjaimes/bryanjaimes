@@ -190,9 +190,11 @@ export default function Projects() {
               Featured Work
             </span>
           </div>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight">
-            Projects
-          </h2>
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl tracking-tight">
+              Projects
+            </h2>
+          </div>
         </motion.div>
 
         {/* Projects Grid */}
