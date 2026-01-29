@@ -22,23 +22,6 @@ interface Project {
 
 const projects: Project[] = [
   {
-    id: "a-eye",
-    icon: "👁️",
-    title: "A-eye (SASHA)",
-    description:
-      "AI-powered diabetic retinopathy detection system. Catches what humans miss — because early detection means lives saved.",
-    longDescription:
-      "Using deep learning and computer vision to analyze retinal images, enabling early detection of diabetic retinopathy before irreversible vision loss occurs.",
-    tags: ["PyTorch", "CNN", "Medical Imaging", "Python", "ONNX"],
-    highlight: {
-      icon: "↑",
-      text: "Early detection saves vision",
-    },
-    gradient: "from-emerald-500 to-teal-400",
-    glowColor: "rgba(16, 185, 129, 0.2)",
-    link: "https://github.com/Bryanjaimes/a-eye",
-  },
-  {
     id: "opendeploy",
     icon: "🚀",
     title: "OpenDeploy",
@@ -54,6 +37,23 @@ const projects: Project[] = [
     gradient: "from-blue-500 to-cyan-400",
     glowColor: "rgba(59, 130, 246, 0.2)",
     link: "https://github.com/Bryanjaimes/opendeploy",
+  },
+  {
+    id: "a-eye",
+    icon: "👁️",
+    title: "A-eye (SASHA)",
+    description:
+      "AI-powered diabetic retinopathy detection system. Catches what humans miss — because early detection means lives saved.",
+    longDescription:
+      "Using deep learning and computer vision to analyze retinal images, enabling early detection of diabetic retinopathy before irreversible vision loss occurs.",
+    tags: ["PyTorch", "CNN", "Medical Imaging", "Python", "ONNX"],
+    highlight: {
+      icon: "↑",
+      text: "Early detection saves vision",
+    },
+    gradient: "from-emerald-500 to-teal-400",
+    glowColor: "rgba(16, 185, 129, 0.2)",
+    link: "https://github.com/Bryanjaimes/a-eye",
   },
   {
     id: "permit-classifier",
@@ -138,28 +138,111 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         </div>
 
         {/* Link arrow */}
-        {project.link && (
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute top-8 right-8 w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-white/30 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+        {project.id === "opendeploy" ? (
+          <div className="absolute top-8 right-8 group/od">
+            <button
+              type="button"
+              className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-white/30 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+              aria-label="Open OpenDeploy links"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-              />
-            </svg>
-          </a>
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </button>
+            <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-white/10 bg-[#0b0f1a]/95 backdrop-blur-xl shadow-2xl opacity-0 invisible transition-all duration-200 group-hover/od:opacity-100 group-hover/od:visible z-50">
+              <div className="p-2">
+                <a
+                  href="/opendeploy"
+                  className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors"
+                >
+                  <span className="flex-1">OpenDeploy Page</span>
+                  <svg
+                    className="w-4 h-4 text-zinc-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </a>
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <span className="flex-1">GitHub</span>
+                    <svg
+                      className="w-4 h-4 text-zinc-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : (
+          project.link && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute top-8 right-8 w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-zinc-500 hover:text-white hover:border-white/30 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          )
         )}
+
       </div>
     </motion.div>
   );
@@ -170,7 +253,7 @@ export default function Projects() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="projects" className="relative py-32 overflow-hidden">
+    <section id="projects" className="relative pt-20 pb-12 overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-3xl" />
@@ -182,7 +265,7 @@ export default function Projects() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+          className="mb-10"
         >
           <div className="flex items-center gap-4 mb-4">
             <span className="w-8 h-px bg-gradient-to-r from-blue-500 to-cyan-500" />

@@ -16,7 +16,7 @@ export default function Footer() {
           {/* Logo */}
           <Link href="/" className="relative group">
             <span className="font-serif text-xl italic tracking-tight text-white">
-              Bryan Jaimes
+              Portfolio
             </span>
           </Link>
 
@@ -101,7 +101,7 @@ export default function Footer() {
           className="mt-12 pt-8 border-t border-white/5 text-center"
         >
           <p className="font-mono text-xs text-zinc-600">
-            © {currentYear} Bryan Jaimes. Built with{" "}
+            © {currentYear}. Built with{" "}
             <span className="text-zinc-500">Next.js</span>,{" "}
             <span className="text-zinc-500">Three.js</span>, and{" "}
             <span className="text-zinc-500">Framer Motion</span>.

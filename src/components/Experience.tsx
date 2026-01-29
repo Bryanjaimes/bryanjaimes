@@ -9,7 +9,7 @@ interface Experience {
   date: string;
   title: string;
   company: string;
-  description: string;
+  description: string | string[];
   technologies?: string[];
   type: "work" | "education";
   link?: string;
@@ -18,11 +18,13 @@ interface Experience {
 const experiences: Experience[] = [
   {
     id: "liberty-mutual",
-    date: "2021 — Present",
-    title: "Software Engineer",
+    date: "7/2022 — Present",
+    title: "Software Engineer - Financial Systems & Billing Platforms Modernization",
     company: "Liberty Mutual Insurance",
-    description:
-      "Led CI/CD modernization across Java Spring Boot microservices. Migrated 100% of Premium Posting pipelines from Jenkins/Bamboo to GitHub Actions. Built event-driven integrations with AWS SNS/SQS, DynamoDB, and Kafka for real-time policy processing.",
+    description: [
+      "Impact: 98% build success and 30% faster deploys by migrating 100% of Premium Posting pipelines; ~25% MTTR reduction via Datadog SLOs and Slack alerting; ~30% fewer audit exceptions with automated ledger trails and improved data mappings; 100% IMDSv2 compliance.",
+      "Skills: Java Spring Boot, Node.js, GitHub Actions, Kafka, AWS Lambda, SNS/SQS, DynamoDB, Datadog, event-driven architecture.",
+    ],
     technologies: [
       "Java",
       "Spring Boot",
@@ -109,9 +111,17 @@ function ExperienceCard({
             </div>
 
             {/* Description */}
-            <p className="text-zinc-400 leading-relaxed mb-4">
-              {experience.description}
-            </p>
+            {Array.isArray(experience.description) ? (
+              <ul className="text-zinc-400 leading-relaxed mb-4 list-disc pl-5 space-y-2">
+                {experience.description.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-zinc-400 leading-relaxed mb-4">
+                {experience.description}
+              </p>
+            )}
 
             {/* Technologies */}
             {experience.technologies && (
@@ -153,7 +163,7 @@ export default function Experience() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="experience" className="relative py-32 overflow-hidden">
+    <section id="experience" className="relative pt-12 pb-20 overflow-hidden">
       {/* Background accents */}
       <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-3xl" />
       <div className="absolute bottom-1/3 right-1/4 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-3xl" />
@@ -165,7 +175,7 @@ export default function Experience() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+          className="mb-10"
         >
           <div className="flex items-center gap-4 mb-4">
             <span className="w-8 h-px bg-gradient-to-r from-purple-500 to-pink-500" />

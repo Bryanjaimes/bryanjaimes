@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { importLibrary, setOptions } from "@googlemaps/js-api-loader";
+import { Loader } from "@googlemaps/js-api-loader";
 
 const visitedCountries = [
   "United States of America",
@@ -35,13 +35,18 @@ export default function TravelGoogleEarth() {
 
   useEffect(() => {
     const initMap = async () => {
-      setOptions({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+      if (!apiKey) {
+        return;
+      }
+
+      const loader = new Loader({
+        apiKey,
         version: "weekly",
         libraries: ["maps", "marker"],
       });
 
-      const { Map } = (await importLibrary("maps")) as google.maps.MapsLibrary;
+      const { Map } = (await loader.importLibrary("maps")) as google.maps.MapsLibrary;
       // const { AdvancedMarkerElement } = (await importLibrary("marker")) as google.maps.MarkerLibrary; // For advanced markers if needed
 
       if (mapRef.current) {
@@ -90,7 +95,8 @@ export default function TravelGoogleEarth() {
              // Style the countries
              map.data.setStyle((feature: google.maps.Data.Feature) => {
                const countryName = feature.getProperty("NAME");
-               const isVisited = visitedCountries.includes(countryName);
+               const isVisited =
+                 typeof countryName === "string" && visitedCountries.includes(countryName);
                
                return {
                  fillColor: isVisited ? "#10b981" : "transparent", // Emerald for visited

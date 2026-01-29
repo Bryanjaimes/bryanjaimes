@@ -51,15 +51,24 @@ function GlobeGlow() {
 
 export default function GlobeScene() {
   return (
-    <div
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        backgroundImage: "url('/images/carina_nebula~orig.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <div className="fixed inset-0 pointer-events-none">
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url('/images/carina_nebula~orig.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 20%, rgba(59,130,246,0.16), transparent 55%), radial-gradient(circle at 80% 30%, rgba(168,85,247,0.18), transparent 60%), linear-gradient(180deg, rgba(5,5,6,0.2) 0%, rgba(5,5,6,0.65) 70%, rgba(5,5,6,0.9) 100%)",
+          backgroundBlendMode: "screen, screen, normal",
+        }}
+      />
       <Canvas
         camera={{ position: [0, 0, 7], fov: 45 }}
         style={{ background: "transparent" }}
@@ -70,6 +79,8 @@ export default function GlobeScene() {
       {/* Gradient overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#050506] via-transparent to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#050506]/80 via-transparent to-[#050506]/80" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.04),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(5,5,6,0)_40%,rgba(5,5,6,0.75)_100%)]" />
     </div>
   );
 }
