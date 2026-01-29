@@ -46,7 +46,7 @@ export default function TravelGoogleEarth() {
         libraries: ["maps", "marker"],
       });
 
-      await loader.load();
+      await (loader as unknown as { load: () => Promise<void> }).load();
       const { Map } = (await google.maps.importLibrary("maps")) as google.maps.MapsLibrary;
       // const { AdvancedMarkerElement } = (await importLibrary("marker")) as google.maps.MarkerLibrary; // For advanced markers if needed
 
