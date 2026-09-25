@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <title>PupuserIA Property Canvas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="demo-return" aria-label="Return to portfolio"><a href="/projects/pupuseria">← Back to Bryan’s project hub</a><span>Interactive prototype · Sample inventory</span></nav>
+  <div class="backdrop"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">PupuserIA / Generative Property Search</p>
+        <h1>A living property canvas for El Salvador.</h1>
+      </div>
+      <div class="status-cluster">
+        <span class="status-pill">Sample market data</span>
+        <span class="status-pill status-pill-accent">UI composes itself</span>
+      </div>
+    </header>
+
+    <section class="hero-grid">
+      <article class="panel panel-dark composer-panel">
+        <div class="panel-copy">
+          <p class="section-label">Start with intent</p>
+          <h2>Describe the kind of life or deal you want, then let the interface reconfigure around it.</h2>
+          <p class="lede">
+            This prototype uses sample listings and progressive UI generation. Each step adds a different
+            workspace: region intelligence, shortlist logic, live comparison, and a next-move plan.
+          </p>
+        </div>
+
+        <form id="promptForm" class="prompt-form">
+          <label class="field-label" for="promptInput">Search brief</label>
+          <div class="prompt-row">
+            <textarea
+              id="promptInput"
+              name="prompt"
+              rows="3"
+              placeholder="Example: I want a surf-town home I can use part-time, rent on Airbnb, and keep under $350k."
+            ></textarea>
+            <button type="submit" class="primary-button">Generate search</button>
+          </div>
+        </form>
+
+        <div class="preset-row" id="presetRow" aria-label="Preset searches"></div>
+
+        <div class="control-stack">
+          <section class="control-group">
+            <div class="control-header">
+              <p class="section-label">1 / Goal</p>
+              <button type="button" class="ghost-button" data-reset-field="goal">Clear</button>
+            </div>
+            <div class="chip-row" id="goalControls"></div>
+          </section>
+
+          <section class="control-group">
+            <div class="control-header">
+              <p class="section-label">2 / Region</p>
+              <button type="button" class="ghost-button" data-reset-field="region">Clear</button>
+            </div>
+            <div class="chip-row" id="regionControls"></div>
+          </section>
+
+          <section class="control-group">
+            <div class="control-header">
+              <p class="section-label">3 / Budget</p>
+              <button type="button" class="ghost-button" data-reset-field="budget">Clear</button>
+            </div>
+            <div class="chip-row" id="budgetControls"></div>
+          </section>
+
+          <section class="control-group">
+            <div class="control-header">
+              <p class="section-label">4 / Must-haves</p>
+              <button type="button" class="ghost-button" id="clearNeeds">Clear</button>
+            </div>
+            <div class="chip-row" id="needControls"></div>
+          </section>
+        </div>
+      </article>
+
+      <aside class="panel summary-panel" id="liveSummary"></aside>
+    </section>
+
+    <section class="workspace-grid">
+      <aside class="agent-rail panel" id="agentRail"></aside>
+      <section class="generated-canvas" id="generatedCanvas" aria-live="polite"></section>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

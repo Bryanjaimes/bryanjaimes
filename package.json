@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint .",
+    "preview:hub": "node tools/preview.mjs",
+    "check:hub": "node tools/check-hub.mjs"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^2.0.2",

@@ -1,23 +1,10 @@
-import {
-  Navigation,
-  Hero,
-  Projects,
-  Experience,
-  Contact,
-  Footer,
-  GlobeScene,
-} from "@/components";
+import Script from 'next/script';
+import { homeHtml } from '@/lib/hub-render.mjs';
 
 export default function Home() {
-  return (
-    <main className="relative min-h-screen bg-[#050506] text-white">
-      <GlobeScene />
-      <Navigation />
-      <Projects />
-      <Hero />
-      <Experience />
-      <Contact />
-      <Footer />
-    </main>
-  );
+  // The shared renderer escapes curated content and also powers the local preview.
+  return <>
+    <div dangerouslySetInnerHTML={{ __html: homeHtml() }} />
+    <Script src="/hub/hub.js" strategy="afterInteractive" />
+  </>;
 }
