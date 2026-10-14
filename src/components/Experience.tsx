@@ -1,14 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 interface Experience {
   id: string;
-  date: string;
   title: string;
   company: string;
+  date: string;
   description: string | string[];
   technologies?: string[];
   type: "work" | "education";
@@ -17,42 +16,51 @@ interface Experience {
 
 const experiences: Experience[] = [
   {
-    id: "liberty-mutual",
-    date: "7/2022 — Present",
-    title: "Software Engineer - Financial Systems & Billing Platforms Modernization",
-    company: "Liberty Mutual Insurance",
+    id: "ce-degree-bu",
+    title: "B.S. Computer Engineering",
+    company: "CE Degree BU",
+    date: "2018 — 2022",
     description: [
-      "Impact: 98% build success and 30% faster deploys by migrating 100% of Premium Posting pipelines; ~25% MTTR reduction via Datadog SLOs and Slack alerting; ~30% fewer audit exceptions with automated ledger trails and improved data mappings; 100% IMDSv2 compliance.",
-      "Skills: Java Spring Boot, Node.js, GitHub Actions, Kafka, AWS Lambda, SNS/SQS, DynamoDB, Datadog, event-driven architecture.",
+      "Cloud, cybersecurity, and embedded systems.",
+      "React Native, IoT, and FPGA projects.",
     ],
-    technologies: [
-      "Java",
-      "Spring Boot",
-      "AWS",
-      "GitHub Actions",
-      "Kafka",
-      "DynamoDB",
+    technologies: ["React Native", "C++", "Verilog", "FPGA"],
+    type: "education",
+  },
+  {
+    id: "liberty-mutual",
+    title: "Software Engineer",
+    company: "Liberty Mutual Insurance",
+    date: "July 2022 — Present",
+    description: [
+      "98% build success. 30% faster deployments.",
+      "Approximately 25% faster incident recovery with Datadog.",
+      "Approximately 30% fewer audit exceptions.",
     ],
+    technologies: ["Java", "Spring Boot", "AWS", "Kafka", "GitHub Actions"],
     type: "work",
   },
   {
     id: "bldup",
-    date: "2021",
     title: "Machine Learning Engineer Intern",
     company: "BLDUP",
-    description:
-      "Built and deployed ML microservice automating permit classification with ~90% accuracy. Trained BERT model on 3M+ permits from Boston, Austin, and San Francisco. Designed production-ready FastAPI service with Redis caching.",
-    technologies: ["Python", "PyTorch", "BERT", "FastAPI", "Redis", "PostgreSQL"],
+    date: "2021",
+    description: [
+      "BERT classification trained on 3M+ permits.",
+      "FastAPI inference service with Redis caching.",
+    ],
+    technologies: ["Python", "PyTorch", "BERT", "FastAPI"],
     type: "work",
-    link: "https://github.com/amjustin13/MachineLearning-InCommercialRealEstate",
   },
   {
-    id: "bu",
-    date: "2018 — 2022",
-    title: "B.S. Computer Engineering",
-    company: "Boston University",
-    description:
-      "Specialized in cloud computing, cybersecurity, and embedded systems. Shipped a cross-platform React Native app, engineered an IoT vehicle with real-time communication, and designed an FPGA game from scratch in Verilog.",    technologies: ["React Native", "C++", "Verilog", "FPGA", "IoT", "AWS"],    type: "education",
+    id: "sasha",
+    title: "Healthcare Assistant Project",
+    company: "SASHA",
+    date: "Ongoing",
+    description: "Such A Smart Healthcare Assistant. Kept visible while current implementation is still being stabilized.",
+    technologies: ["Healthcare", "HTML"],
+    type: "work",
+    link: "https://github.com/Bryanjaimes/sasha",
   },
 ];
 
@@ -64,17 +72,21 @@ function ExperienceCard({
   index: number;
 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  // Slightly increase translucency as card scrolls through viewport.
+  // Range kept subtle to mimic iOS glass feel.
+  const iconOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.86, 0.74, 0.86]);
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-      animate={
-        isInView
-          ? { opacity: 1, x: 0 }
-          : { opacity: 0, x: index % 2 === 0 ? -50 : 50 }
-      }
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.6, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
       className="group relative"
     >
@@ -127,12 +139,13 @@ function ExperienceCard({
             {experience.technologies && (
               <div className="flex flex-wrap gap-2">
                 {experience.technologies.map((tech) => (
-                  <span
+                  <motion.span
                     key={tech}
-                    className="font-mono text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-400"
+                    style={{ opacity: iconOpacity }}
+                    className="font-mono text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-zinc-400 backdrop-blur-sm"
                   >
                     {tech}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
             )}
@@ -145,9 +158,6 @@ function ExperienceCard({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 mt-4 text-sm text-blue-400 hover:text-blue-300 transition-colors"
               >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
                 View on GitHub
               </a>
             )}
@@ -159,9 +169,6 @@ function ExperienceCard({
 }
 
 export default function Experience() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
     <section id="experience" className="relative pt-12 pb-20 overflow-hidden">
       {/* Background accents */}
@@ -171,9 +178,9 @@ export default function Experience() {
       <div className="max-w-5xl mx-auto px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
-          ref={ref}
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mb-10"
         >
@@ -198,49 +205,6 @@ export default function Experience() {
             />
           ))}
         </div>
-
-        {/* Resume Link */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          className="mt-12 text-center"
-        >
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass border border-white/10 font-mono text-sm text-zinc-300 hover:text-white hover:border-white/20 transition-all duration-300 group"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            Download Resume
-            <svg
-              className="w-4 h-4 transition-transform group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </a>
-        </motion.div>
       </div>
     </section>
   );
