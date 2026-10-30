@@ -27,7 +27,7 @@ export function header() {
   return `<a class="hub-skip" href="#main-content">Skip to content</a>
   <header class="hub-header">
     <div class="header-inner">
-      <a class="hub-brand" href="/" aria-label="Bryan Jaimes home"><span class="brand-mark">bj.</span><span>Bryan Jaimes</span></a>
+      <a class="hub-brand" href="/" aria-label="Home"><span class="brand-mark">bj.</span></a>
       <nav class="hub-nav" aria-label="Main navigation"><a href="/#projects">Projects</a><a href="/?category=Vibe%20lab#projects" data-category-link="Vibe lab">Playground</a><a href="/#career">Career</a></nav>
       <a class="header-contact" href="mailto:${profile.email}">Contact ${external}</a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-navigation" aria-label="Open navigation"><span></span><span></span></button>
@@ -37,7 +37,7 @@ export function header() {
 }
 
 export function footer() {
-  return `<footer class="hub-footer hub-container"><span class="footer-note">© ${new Date().getFullYear()} Bryan Jaimes</span><div><a href="${profile.github}">GitHub ${external}</a><a href="${profile.linkedin}">LinkedIn ${external}</a><a href="/travel">Travel ${external}</a></div><a class="back-top" href="#main-content" aria-label="Back to top">↑</a></footer>`;
+  return `<footer class="hub-footer hub-container"><span class="footer-note">© ${new Date().getFullYear()}</span><div><a href="${profile.github}">GitHub ${external}</a><a href="${profile.linkedin}">LinkedIn ${external}</a><a href="/travel">Travel ${external}</a></div><a class="back-top" href="#main-content" aria-label="Back to top">↑</a></footer>`;
 }
 
 function card(project, index) {
@@ -55,7 +55,7 @@ export function homeHtml() {
   const count = category => projects.filter(p => category === 'All projects' || (category === 'Selected' ? p.category !== 'Archive' : p.category === category)).length;
   return `<div class="hub">${spaceScene()}${header()}<main id="main-content">
     <section class="hub-container hero-section" aria-labelledby="intro-title">
-      <div class="hero-copy"><div class="eyebrow"><span class="status-dot"></span> SOFTWARE ENGINEER & BUILDER</div><h1 id="intro-title">Bryan<br><span>Jaimes.</span></h1><p class="hero-description">Software. AI. Experiments.</p><div class="hero-actions"><a class="hub-button button-primary" href="#projects">Explore projects ${arrow}</a><a class="hub-button button-secondary" href="${profile.github}">${github} GitHub ${external}</a></div></div>
+      <div class="hero-copy"><div class="eyebrow"><span class="status-dot"></span> SOFTWARE ENGINEER & BUILDER</div><h1 id="intro-title" class="hero-mission">Build the infrastructure that lets AI <span>catch disease earlier, treat it, and personalize care</span> for everyone, everywhere.</h1><p class="hero-description">Software. AI. Experiments.</p><div class="hero-actions"><a class="hub-button button-primary" href="#projects">Explore projects ${arrow}</a><a class="hub-button button-secondary" href="${profile.github}">${github} GitHub ${external}</a></div></div>
       <div class="hero-stage"><div class="orbital-ring ring-one" aria-hidden="true"></div><div class="orbital-ring ring-two" aria-hidden="true"></div><a class="hero-feature" href="/projects/opendeploy"><div class="feature-top"><span><span class="status-dot"></span> FEATURED PROJECT</span>${external}</div>${art('deploy', true)}<div class="feature-bottom"><div><h2>OpenDeploy</h2><p>Multi-cloud ML deployment.</p></div><span class="feature-arrow">${arrow}</span></div></a><a class="orbit-chip" href="/?category=Vibe%20lab#projects" data-category-link="Vibe lab"><span class="chip-spark" aria-hidden="true">✧</span> Vibe lab <span>${count('Vibe lab')} experiments</span>${external}</a></div>
     </section>
     <section id="projects" class="hub-container projects-section" aria-labelledby="projects-title">

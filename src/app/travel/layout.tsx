@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Travel',
-  description: 'Places explored by Bryan Jaimes.',
+  description: 'Places explored.',
   alternates: { canonical: '/travel' },
 };
 

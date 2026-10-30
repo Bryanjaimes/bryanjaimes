@@ -1,4 +1,4 @@
-# Bryan Jaimes — Project Hub
+# Project Hub
 
 A portfolio hub for projects, career work, and AI-assisted experiments. The site keeps the existing Next.js app and travel route, with a new server-rendered homepage and individual project pages.
 
